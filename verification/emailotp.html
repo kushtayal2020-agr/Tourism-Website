@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTP Verification</title>
+<meta name="description" content="Verify your AZURA sign in with an email OTP.">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+    --bg-1:#0f172a;
+    --bg-2:#1e3a8a;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#6b7280;
+    --primary:#2563eb;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at top left, rgba(96,165,250,.32), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(251,191,36,.22), transparent 28%),
+      linear-gradient(135deg,var(--bg-1),var(--bg-2));
+}
+
+.card{
+    width:min(440px,100%);
+    background:rgba(255,255,255,.96);
+    border-radius:20px;
+    padding:36px;
+    box-shadow:0 24px 60px rgba(0,0,0,.24);
+}
+
+.icon{
+    width:80px;
+    height:80px;
+    margin:auto;
+    border-radius:50%;
+    background:#eef4ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+}
+
+h2{
+    text-align:center;
+    margin-top:20px;
+    color:var(--text);
+}
+
+p{
+    text-align:center;
+    color:var(--muted);
+    margin-top:10px;
+    font-size:14px;
+}
+
+.phone{
+    text-align:center;
+    color:var(--primary);
+    font-weight:600;
+    margin-top:8px;
+}
+
+.otp-box{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:10px;
+    margin:32px 0;
+}
+
+.otp-box input{
+    width:100%;
+    height:58px;
+    text-align:center;
+    font-size:22px;
+    border:2px solid #d1d5db;
+    border-radius:12px;
+    outline:none;
+    transition:.3s;
+}
+
+.otp-box input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 10px rgba(37,99,235,.25);
+}
+
+.verify-btn{
+    width:100%;
+    border:none;
+    padding:15px;
+    background:var(--primary);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.verify-btn:hover{
+    background:#1d4ed8;
+}
+
+.bottom{
+    margin-top:20px;
+    text-align:center;
+    color:#777;
+    font-size:14px;
+}
+
+.bottom a{
+    color:var(--primary);
+    text-decoration:none;
+    font-weight:600;
+}
+
+.status{
+    margin-top:16px;
+    text-align:center;
+    font-size:13px;
+    font-weight:600;
+    color:#b91c1c;
+    min-height:18px;
+}
+
+.meta-row{
+    margin-top:8px;
+    text-align:center;
+    font-size:13px;
+    color:var(--muted);
+}
+
+.meta-row strong{
+    color:var(--text);
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+    <div class="icon">
+        🔒
+    </div>
+
+    <h2>OTP Verification</h2>
+
+        <p>Enter the 6-digit verification code sent to</p>
+
+        <div class="phone" id="otpEmail">your email</div>
+        <div class="meta-row" id="otpRole"></div>
+
+    <div class="otp-box">
+                <input type="text" maxlength="1" inputmode="numeric">
+                <input type="text" maxlength="1" inputmode="numeric">
+                <input type="text" maxlength="1" inputmode="numeric">
+                <input type="text" maxlength="1" inputmode="numeric">
+                <input type="text" maxlength="1" inputmode="numeric">
+                <input type="text" maxlength="1" inputmode="numeric">
+    </div>
+
+        <button class="verify-btn" id="verifyBtn">
+        Verify OTP
+    </button>
+
+        <div class="status" id="otpStatus"></div>
+
+    <div class="bottom">
+        Didn't receive the OTP?
+                <a href="#" id="resendOtpLink">Resend OTP</a>
+    </div>
+
+</div>
+
+<script>
+    const otpFields = Array.from(document.querySelectorAll('.otp-box input'));
+    const otpEmail = document.getElementById('otpEmail');
+    const otpRole = document.getElementById('otpRole');
+    const otpStatus = document.getElementById('otpStatus');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const resendOtpLink = document.getElementById('resendOtpLink');
+    const otpChallenge = JSON.parse(sessionStorage.getItem('azuraOtpChallenge') || 'null');
+
+    function setStatus(message, isError = true) {
+        if (!otpStatus) return;
+        otpStatus.style.color = isError ? '#b91c1c' : '#047857';
+        otpStatus.textContent = message;
+    }
+
+    if (otpChallenge) {
+        otpEmail.textContent = otpChallenge.email;
+        otpRole.textContent = `Account: ${otpChallenge.role}`;
+    } else {
+        otpEmail.textContent = 'No OTP session found';
+        otpRole.textContent = 'Go back and request a new code.';
+    }
+
+    otpFields.forEach((field, index) => {
+        field.addEventListener('input', () => {
+            field.value = field.value.replace(/\D/g, '').slice(0, 1);
+            if (field.value && otpFields[index + 1]) {
+                otpFields[index + 1].focus();
+            }
+        });
+        field.addEventListener('keydown', (event) => {
+            if (event.key === 'Backspace' && !field.value && otpFields[index - 1]) {
+                otpFields[index - 1].focus();
+            }
+        });
+    });
+
+    verifyBtn.addEventListener('click', () => {
+        if (!otpChallenge) {
+            setStatus('OTP session expired. Go back and request a new code.');
+            return;
+        }
+
+        if (Date.now() > otpChallenge.expiresAt) {
+            sessionStorage.removeItem('azuraOtpChallenge');
+            setStatus('OTP expired. Please request a new one.');
+            return;
+        }
+
+        const enteredOtp = otpFields.map(field => field.value).join('');
+        if (enteredOtp !== otpChallenge.otp && enteredOtp !== '123456') {
+            setStatus('Invalid OTP. Try the demo code shown in the login flow.');
+            return;
+        }
+
+        localStorage.setItem('azuraCurrentUser', JSON.stringify({
+            email: otpChallenge.email,
+            role: otpChallenge.role,
+            name: otpChallenge.name,
+            authMethod: 'otp'
+        }));
+        sessionStorage.removeItem('azuraOtpChallenge');
+        sessionStorage.removeItem('azuraOtpDestination');
+        setStatus('Verified. Redirecting...', false);
+        setTimeout(() => {
+            window.location.href = '../index.html';
+        }, 900);
+    });
+
+    resendOtpLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (!otpChallenge) {
+            window.location.href = '../login.html';
+            return;
+        }
+
+        otpChallenge.otp = '123456';
+        otpChallenge.expiresAt = Date.now() + 5 * 60 * 1000;
+        sessionStorage.setItem('azuraOtpChallenge', JSON.stringify(otpChallenge));
+        otpFields.forEach(field => { field.value = ''; });
+        otpFields[0].focus();
+        setStatus('A new demo OTP is ready. Use 123456 to verify.');
+    });
+</script>
+
+</body>
+</html>

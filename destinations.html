@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destinations — AZURA Luxury Travel</title>
+  <meta name="description" content="Browse and search curated luxury travel destinations around the world. Filter by country, category, budget, and rating.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/destinations.css">
+</head>
+<body>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <nav class="navbar solid-nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+        AZURA
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="destinations.html" class="active">Destinations</a>
+        <a href="index.html#packages">Packages</a>
+        <a href="index.html#experiences">Experiences</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="nav-signin">Sign In</a>
+        <a href="#" class="nav-signup">Sign Up</a>
+        <button class="btn btn-gold btn-sm" onclick="openBooking()">Book Now</button>
+      </div>
+      <button class="nav-toggle" onclick="toggleMobileMenu(true)" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-top">
+      <span class="logo">AZURA</span>
+      <button class="modal-close" style="background:rgba(255,255,255,.1);color:#fff" onclick="toggleMobileMenu(false)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <a href="index.html" onclick="toggleMobileMenu(false)">Home</a>
+    <a href="destinations.html" onclick="toggleMobileMenu(false)">Destinations</a>
+    <a href="index.html#packages" onclick="toggleMobileMenu(false)">Packages</a>
+    <a href="index.html#experiences" onclick="toggleMobileMenu(false)">Experiences</a>
+    <a href="index.html#about" onclick="toggleMobileMenu(false)">About</a>
+    <a href="index.html#blog" onclick="toggleMobileMenu(false)">Blog</a>
+    <a href="index.html#contact" onclick="toggleMobileMenu(false)">Contact</a>
+    <div class="mobile-menu-actions">
+      <button class="btn btn-ghost btn-block">Sign In</button>
+      <button class="btn btn-gold btn-block" onclick="toggleMobileMenu(false);openBooking()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- ============================= PAGE HERO ============================= -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container page-hero-content">
+      <span class="eyebrow"><span class="stamp-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg></span> Global Passport</span>
+      <h1>Explore Our <span class="grad-text">Destinations</span></h1>
+      <p>Discover handpicked luxury escapes, volcanic islands, pristine alpine peaks, and cultural heritage wonders worldwide.</p>
+    </div>
+  </section>
+
+  <!-- ============================= CATALOG SECTION ============================= -->
+  <section class="section catalog-section" id="destCatalogSection">
+    <div class="container">
+
+      <!-- Filter Controls Bar -->
+      <div class="filter-bar">
+        <div class="search-row">
+          <div class="search-input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search by destination, country, or keyword (e.g., Bali, Greece, Sunset cruise)...">
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="resetAllFilters()" style="border-radius:100px;">Reset Filters</button>
+        </div>
+
+        <!-- Category Pills -->
+        <div class="cat-pills-row">
+          <button class="cat-pill active" data-cat="all">All Categories</button>
+          <button class="cat-pill" data-cat="luxury">Luxury</button>
+          <button class="cat-pill" data-cat="honeymoon">Honeymoon</button>
+          <button class="cat-pill" data-cat="culture">Culture</button>
+          <button class="cat-pill" data-cat="adventure">Adventure</button>
+          <button class="cat-pill" data-cat="beach">Beach</button>
+        </div>
+
+        <div class="filter-controls-row">
+          <div class="filter-group">
+            <label for="countrySelect">Country</label>
+            <select id="countrySelect">
+              <option value="all">All Countries</option>
+              <option value="Greece">Greece</option>
+              <option value="Indonesia">Indonesia</option>
+              <option value="Japan">Japan</option>
+              <option value="Switzerland">Switzerland</option>
+              <option value="Indian Ocean">Indian Ocean (Maldives)</option>
+              <option value="Peru">Peru</option>
+              <option value="UAE">UAE (Dubai)</option>
+              <option value="France">France (Paris)</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="budgetSelect">Max Budget / Person</label>
+            <select id="budgetSelect">
+              <option value="3000">Any Budget</option>
+              <option value="1000">Under $1,000</option>
+              <option value="1500">Under $1,500</option>
+              <option value="2000">Under $2,000</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="ratingSelect">Minimum Rating</label>
+            <select id="ratingSelect">
+              <option value="0">All Ratings</option>
+              <option value="4.5">4.5+ Stars</option>
+              <option value="4.8">4.8+ Stars</option>
+              <option value="4.9">4.9+ Stars</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="sortSelect">Sort By</label>
+            <select id="sortSelect">
+              <option value="recommended">Recommended</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating-desc">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="active-chips" id="activeFilterChips"></div>
+      </div>
+
+      <!-- Toolbar Meta & View Switcher -->
+      <div class="toolbar-meta">
+        <div class="result-count">Showing <span id="resultCountNum">0</span> curated destinations</div>
+        <div class="toolbar-actions">
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" onclick="setViewMode('grid')" title="Grid View" aria-label="Grid View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+            <button class="view-btn" data-view="list" onclick="setViewMode('list')" title="List View" aria-label="List View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catalog Grid / Container -->
+      <div id="destCatalogGrid" class="dest-grid"></div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="catalogPagination"></div>
+
+    </div>
+  </section>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="font-size:20px;">
+            <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+            AZURA
+          </a>
+          <p>Curated journeys and luxury stays across 120+ countries — booked in minutes, remembered for a lifetime.</p>
+          <div class="social-row">
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg></a>
+            <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4.1 4.1 0 0 0-7 3.7A11.6 11.6 0 0 1 3.4 4.6a4.1 4.1 0 0 0 1.3 5.5c-.7 0-1.3-.2-1.9-.5v.1c0 2 1.4 3.6 3.3 4a4.2 4.2 0 0 1-1.9.1 4.1 4.1 0 0 0 3.8 2.9A8.3 8.3 0 0 1 2 18.4a11.6 11.6 0 0 0 6.3 1.8c7.5 0 11.7-6.3 11.7-11.7v-.5c.8-.6 1.5-1.3 2-2.1z"/></svg></a>
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.6h2.6l.4-3h-3v-1.9c0-.9.2-1.5 1.5-1.5h1.6V4.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.4H7.9v3h2.5V21h3.1z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Destinations</h5>
+          <ul>
+            <li><a href="destinations.html?search=Santorini">Santorini, Greece</a></li>
+            <li><a href="destinations.html?search=Bali">Bali, Indonesia</a></li>
+            <li><a href="destinations.html?search=Kyoto">Kyoto, Japan</a></li>
+            <li><a href="destinations.html?search=Swiss">Swiss Alps</a></li>
+            <li><a href="destinations.html?search=Maldives">Maldives</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Cancellation Policy</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Travel Insurance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="index.html#blog">Blog</a></li>
+            <li><a href="#">Partners</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-news">
+          <h5>Stay in the Loop</h5>
+          <p>Curated fare drops, twice a month, straight to your inbox.</p>
+          <form class="footer-news-form" onsubmit="event.preventDefault(); showToast('Subscribed to newsletter!');">
+            <input type="email" placeholder="you@email.com" required>
+            <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 AZURA Travel, Inc. All rights reserved.</span>
+        <div class="payment-row">
+          <span class="pay-chip">Visa</span><span class="pay-chip">Mastercard</span><span class="pay-chip">UPI</span><span class="pay-chip">PayPal</span><span class="pay-chip">Apple Pay</span><span class="pay-chip">G Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================= LIGHTBOX ============================= -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <img id="lightboxImg" src="" alt="Zoomed View">
+  </div>
+
+  <!-- ============================= BOOKING MODAL ============================= -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="booking-modal">
+      <div class="modal-head">
+        <div>
+          <h3 id="bookingTitle">Complete Your Booking</h3>
+          <p id="bookingSub">Step <span id="stepNum">1</span> of 3</p>
+        </div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-steps">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+      </div>
+      <div class="modal-body">
+        <div class="m-step active" id="step1">
+          <div class="trip-summary">
+            <div class="row"><span>Selected Trip</span><b id="sumPkg">Santorini Escape</b></div>
+            <div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+1 555 000 0000"></div>
+            <div class="form-group"><label>Travelers</label><select><option>1 Adult</option><option selected>2 Adults</option><option>Family (4+)</option></select></div>
+          </div>
+          <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
+        </div>
+
+        <div class="m-step" id="step2">
+          <div class="pay-methods">
+            <div class="pay-method selected" data-pay="visa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg>Visa</div>
+            <div class="pay-method" data-pay="mastercard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>Mastercard</div>
+            <div class="pay-method" data-pay="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M18 3 6 21M18 21V3"/></svg>UPI</div>
+          </div>
+          <div id="cardFields">
+            <div class="form-row">
+              <div class="form-group full"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM / YY"></div>
+              <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+            </div>
+          </div>
+          <div class="trip-summary">
+            <div class="row"><span>Package Base</span><b id="sumBase">$1,890</b></div>
+            <div class="row"><span>Taxes & Fees</span><b>$142</b></div>
+            <div class="row total"><span>Total due today</span><b id="sumTotal">$2,032</b></div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-outline" onclick="goStep(1)">Back</button>
+            <button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button>
+          </div>
+        </div>
+
+        <div class="m-step" id="step3">
+          <div class="success-wrap">
+            <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3>Booking Confirmed!</h3>
+            <p>Your trip is officially on the calendar. A confirmation has been sent to your email.</p>
+            <div class="ref-code" id="refCode">AZ-284915</div>
+            <button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/destinations.js"></script>
+</body>
+</html>

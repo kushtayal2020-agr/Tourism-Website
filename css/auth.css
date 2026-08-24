@@ -1,0 +1,165 @@
+/* ==========================================================================
+   AZURA — AUTHENTICATION STYLES (Login & Sign Up)
+   ========================================================================== */
+
+.auth-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 140px 20px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(120% 140% at 20% 0%, #16213D 0%, var(--primary) 55%, #0A1120 100%);
+  overflow: hidden;
+}
+
+.auth-blob {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.45; pointer-events: none; z-index: 1;
+}
+.auth-blob-1 { width: 450px; height: 450px; background: var(--secondary); top: 5%; left: -10%; }
+.auth-blob-2 { width: 380px; height: 380px; background: var(--accent); bottom: 5%; right: -8%; }
+
+.auth-card {
+  position: relative; z-index: 2;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 28px;
+  padding: 44px 38px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 50px 120px -25px rgba(0, 0, 0, 0.65);
+  color: #fff;
+}
+@media (max-width: 520px) { .auth-card { padding: 32px 22px; } }
+
+.auth-header { text-align: center; margin-bottom: 28px; }
+.auth-header h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+.auth-header p { font-size: 14.5px; color: rgba(255, 255, 255, 0.7); }
+
+/* Role Tabs Switcher */
+.role-tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 100px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.role-tab {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  cursor: pointer;
+  transition: all .3s ease;
+  border: none;
+  background: none;
+}
+.role-tab.active {
+  background: var(--secondary);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+}
+.role-tab.admin-tab.active {
+  background: linear-gradient(135deg, var(--gold), #F59E0B);
+  color: var(--primary);
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.45);
+}
+
+/* Admin Security Badge */
+.admin-badge {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: var(--gold);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+.admin-badge.show { display: flex; animation: heroUp .3s ease; }
+.admin-badge svg { width: 14px; height: 14px; }
+
+/* Form Group & Inputs */
+.auth-form-group { margin-bottom: 18px; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.auth-form-group label { font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, 0.75); text-transform: uppercase; letter-spacing: .05em; }
+
+.input-icon-wrap { position: relative; display: flex; align-items: center; }
+.input-icon-wrap svg.input-icon {
+  position: absolute; left: 16px; width: 18px; height: 18px; color: rgba(255, 255, 255, 0.5); pointer-events: none;
+}
+.input-icon-wrap input, .input-icon-wrap select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 13px 44px 13px 44px;
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color .3s ease, background .3s ease;
+}
+.input-icon-wrap select option { background: #0F172A; color: #fff; }
+.input-icon-wrap input:focus, .input-icon-wrap select:focus {
+  border-color: var(--secondary); background: rgba(255, 255, 255, 0.12);
+}
+
+.eye-btn {
+  position: absolute; right: 14px; color: rgba(255, 255, 255, 0.5);
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: color .2s ease; background: none; border: none;
+}
+.eye-btn:hover { color: #fff; }
+.eye-btn svg { width: 18px; height: 18px; }
+
+/* Forgot Password & Checkbox */
+.form-options-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin: 12px 0 22px; }
+.form-options-row label { display: flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.8); cursor: pointer; }
+.form-options-row a { color: var(--gold); font-weight: 700; transition: text-decoration .2s ease; }
+.form-options-row a:hover { text-decoration: underline; }
+
+/* Password Strength Meter */
+.strength-meter-wrap { margin-top: 6px; }
+.strength-track { height: 4px; border-radius: 100px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+.strength-bar-fill { height: 100%; width: 0%; border-radius: 100px; transition: width .35s ease, background .35s ease; }
+.strength-text { font-size: 11.5px; font-weight: 700; color: rgba(255, 255, 255, 0.6); margin-top: 4px; display: block; }
+
+/* Social Auth Grid */
+.auth-divider { display: flex; align-items: center; gap: 14px; color: rgba(255, 255, 255, 0.4); font-size: 12px; font-weight: 700; margin: 24px 0; text-transform: uppercase; letter-spacing: .08em; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.12); }
+
+.social-auth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.social-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px; padding: 12px; color: #fff; font-size: 13.5px; font-weight: 700; transition: all .3s ease; cursor: pointer;
+}
+.social-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
+.social-btn svg { width: 18px; height: 18px; }
+
+.auth-footer-link { text-align: center; margin-top: 26px; font-size: 14px; color: rgba(255, 255, 255, 0.7); }
+.auth-footer-link a { color: var(--gold); font-weight: 800; margin-left: 4px; }
+.auth-footer-link a:hover { text-decoration: underline; }
+
+.otp-cta {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-top: 18px; padding: 14px 16px; border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.otp-cta strong { display: block; font-size: 13px; color: #fff; margin-bottom: 4px; }
+.otp-cta span { display: block; font-size: 12.5px; color: rgba(255, 255, 255, 0.68); }
+.otp-cta .btn { white-space: nowrap; }
+
+@media (max-width: 520px) {
+  .otp-cta { flex-direction: column; align-items: stretch; }
+}

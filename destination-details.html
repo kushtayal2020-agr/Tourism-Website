@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destination Details — AZURA Luxury Travel</title>
+  <meta name="description" content="Explore destination details, weather, photo gallery, luxury hotels, curated packages, and book your dream luxury vacation with AZURA.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/destination-details.css">
+</head>
+<body>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <nav class="navbar solid-nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+        AZURA
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="index.html#packages">Packages</a>
+        <a href="index.html#experiences">Experiences</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#blog">Blog</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="nav-signin">Sign In</a>
+        <a href="#" class="nav-signup">Sign Up</a>
+        <button class="btn btn-gold btn-sm" onclick="openBooking()">Book Now</button>
+      </div>
+      <button class="nav-toggle" onclick="toggleMobileMenu(true)" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-top">
+      <span class="logo">AZURA</span>
+      <button class="modal-close" style="background:rgba(255,255,255,.1);color:#fff" onclick="toggleMobileMenu(false)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <a href="index.html" onclick="toggleMobileMenu(false)">Home</a>
+    <a href="destinations.html" onclick="toggleMobileMenu(false)">Destinations</a>
+    <a href="index.html#packages" onclick="toggleMobileMenu(false)">Packages</a>
+    <a href="index.html#experiences" onclick="toggleMobileMenu(false)">Experiences</a>
+    <a href="index.html#about" onclick="toggleMobileMenu(false)">About</a>
+    <a href="index.html#blog" onclick="toggleMobileMenu(false)">Blog</a>
+    <a href="index.html#contact" onclick="toggleMobileMenu(false)">Contact</a>
+    <div class="mobile-menu-actions">
+      <button class="btn btn-ghost btn-block">Sign In</button>
+      <button class="btn btn-gold btn-block" onclick="toggleMobileMenu(false);openBooking()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- ============================= HERO BANNER ============================= -->
+  <section class="detail-hero">
+    <div class="detail-hero-bg">
+      <img id="detailHeroBgImg" src="https://images.unsplash.com/photo-1696519669474-3001c0e2b548?w=1600&q=75" alt="Destination Hero Background">
+    </div>
+    <div class="container detail-hero-content">
+      <div class="breadcrumbs">
+        <a href="index.html">Home</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <a href="destinations.html">Destinations</a>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span id="breadcrumbDest">Santorini</span>
+      </div>
+
+      <div class="detail-title-row">
+        <div>
+          <span class="eyebrow" style="border-color:rgba(255,255,255,0.4);color:var(--gold);background:rgba(255,255,255,0.06);margin-bottom:12px;" id="detailTag">Luxury</span>
+          <h1 id="detailTitle">Santorini</h1>
+          <div class="detail-meta-pills">
+            <div class="detail-meta-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span id="detailCountry">Greece</span>
+            </div>
+            <div class="detail-meta-pill" id="detailRating">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 6.9L12 17.3 5.8 20.8l1.6-6.9L2 9.2l7.1-.6z"/></svg> 4.9 (342 reviews)
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button class="wishlist-btn" style="position:static;" onclick="toggleWishlist(this)" title="Wishlist" aria-label="Add to wishlist">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.5l-1-.9a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+          </button>
+          <div style="text-align:right;">
+            <span style="font-size:12px;color:rgba(255,255,255,0.7);display:block;font-weight:600;">Starting from</span>
+            <b id="detailHeaderPrice" style="font-size:32px;font-weight:800;color:#fff;">$1,240</b> <small style="font-size:12px;color:rgba(255,255,255,0.7);">/ person</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= GALLERY MOSAIC ============================= -->
+  <section class="gallery-mosaic-section">
+    <div class="container">
+      <div class="gallery-mosaic" id="galleryMosaicContainer"></div>
+    </div>
+  </section>
+
+  <!-- ============================= QUICK INFO BAR ============================= -->
+  <section style="padding-bottom:30px;">
+    <div class="container">
+      <div class="info-bar">
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div>
+            <div class="info-lbl">Best Time to Visit</div>
+            <div class="info-val" id="infoBestTime">May – October</div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></div>
+          <div>
+            <div class="info-lbl">Avg. Temperature</div>
+            <div class="info-val" id="infoAvgTemp">26°C</div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div>
+            <div class="info-lbl">Ideal Stay</div>
+            <div class="info-val" id="infoDuration">5 – 7 Days</div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div>
+            <div class="info-lbl">Language</div>
+            <div class="info-val" id="infoLang">Greek / English</div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div>
+            <div class="info-lbl">Currency</div>
+            <div class="info-val" id="infoCurr">Euro (€)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= MAIN CONTENT & SIDEBAR ============================= -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="detail-grid">
+
+        <!-- LEFT COLUMN: TABS & CONTENT -->
+        <div>
+          <!-- Tab Navigation -->
+          <div class="detail-nav-tabs">
+            <button class="detail-tab-btn active" data-tab="overview">Overview</button>
+            <button class="detail-tab-btn" data-tab="weather">Weather & Climate</button>
+            <button class="detail-tab-btn" data-tab="map">Interactive Map</button>
+            <button class="detail-tab-btn" data-tab="hotels">Luxury Hotels</button>
+            <button class="detail-tab-btn" data-tab="packages">Packages</button>
+            <button class="detail-tab-btn" data-tab="reviews">Guest Reviews</button>
+          </div>
+
+          <!-- TAB 1: OVERVIEW -->
+          <div class="tab-content active" id="tab-overview">
+            <div class="content-block">
+              <h3>About the Destination</h3>
+              <p id="tabOverviewText">Loading overview...</p>
+            </div>
+
+            <div class="content-block">
+              <h3>Experience Highlights</h3>
+              <div class="highlights-grid" id="tabHighlightsGrid"></div>
+            </div>
+          </div>
+
+          <!-- TAB 2: WEATHER & CLIMATE -->
+          <div class="tab-content" id="tab-weather">
+            <div class="weather-widget">
+              <div class="weather-header">
+                <div>
+                  <div class="weather-temp-main">
+                    <span class="temp-big" id="weatherCurrentTemp">26°C</span>
+                    <div>
+                      <div class="temp-condition">Sunny & Clear</div>
+                      <div class="temp-sub">Ideal beach & sailing weather</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="weather-icon-lg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+                </div>
+              </div>
+
+              <div class="forecast-bars" id="weatherForecastBars"></div>
+            </div>
+
+            <div class="content-block">
+              <h3>Best Travel Seasons</h3>
+              <p>Summer months (June through August) bring hot, sunny weather and vibrant nightlife. Spring (May) and Autumn (September to October) offer pleasant temperatures, blooming wildflowers, warm seas, and relaxed crowds.</p>
+            </div>
+          </div>
+
+          <!-- TAB 3: INTERACTIVE MAP -->
+          <div class="tab-content" id="tab-map">
+            <div class="map-box">
+              <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=70" alt="Map View">
+              <div class="map-pin-overlay">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span id="mapPinText">Santorini, Greece</span>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <h3>Getting Around & Transfer Distances</h3>
+              <ul style="display:flex;flex-direction:column;gap:12px;color:var(--muted);font-size:15px;">
+                <li style="display:flex;align-items:center;gap:10px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;color:var(--secondary);"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z"/></svg> <b>International Airport:</b> 20 mins private VIP transfer</li>
+                <li style="display:flex;align-items:center;gap:10px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;color:var(--accent);"><path d="M4 15h16l-2 5H6l-2-5Z"/></svg> <b>Ferry Port (Athinios):</b> 25 mins panoramic drive</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- TAB 4: LUXURY HOTELS -->
+          <div class="tab-content" id="tab-hotels">
+            <div class="content-block">
+              <h3>Handpicked 5-Star Accommodations</h3>
+              <p>Every hotel is inspected and vetted by AZURA travel specialists for safety, service excellence, and pristine amenities.</p>
+            </div>
+            <div class="hotel-grid" id="hotelsGrid"></div>
+          </div>
+
+          <!-- TAB 5: PACKAGES -->
+          <div class="tab-content" id="tab-packages">
+            <div class="content-block">
+              <h3>Available Tour Packages</h3>
+              <p>Flight, suite accommodation, private transfers, and guided excursions bundled together with exclusive savings.</p>
+            </div>
+            <div id="packagesGrid"></div>
+          </div>
+
+          <!-- TAB 6: GUEST REVIEWS -->
+          <div class="tab-content" id="tab-reviews">
+            <div class="content-block">
+              <h3>Traveler Reviews & Ratings</h3>
+              <p>Read honest reviews written by verified travelers who booked through AZURA.</p>
+            </div>
+            <div id="reviewsContainer"></div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: STICKY BOOKING SIDEBAR -->
+        <div>
+          <div class="sticky-sidebar">
+            <div class="booking-card">
+              <div class="booking-card-head">
+                <div>
+                  <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">Price per person</span>
+                  <div class="booking-card-price"><b id="sideBasePrice">$1,240</b></div>
+                </div>
+                <div style="font-size:13px;font-weight:700;color:var(--accent);background:rgba(20,184,166,0.12);padding:4px 10px;border-radius:100px;">Best Rate</div>
+              </div>
+
+              <div class="booking-form-group">
+                <label for="sideInDate">Check-in Date</label>
+                <input type="date" id="sideInDate" value="2026-09-10">
+              </div>
+
+              <div class="booking-form-group">
+                <label for="sideOutDate">Check-out Date</label>
+                <input type="date" id="sideOutDate" value="2026-09-16">
+              </div>
+
+              <div class="booking-form-group">
+                <label for="sideGuestsSelect">Travelers</label>
+                <select id="sideGuestsSelect">
+                  <option value="1">1 Adult</option>
+                  <option value="2" selected>2 Adults</option>
+                  <option value="3">3 Adults</option>
+                  <option value="4">4 Adults / Family</option>
+                </select>
+              </div>
+
+              <div class="booking-form-group">
+                <label for="sideTierSelect">Package Tier</label>
+                <select id="sideTierSelect">
+                  <option value="1.0">Signature Deluxe Suite</option>
+                  <option value="1.25">Cliffside Infinity Villa (+25%)</option>
+                  <option value="1.6">Royal Presidential Penthouse (+60%)</option>
+                </select>
+              </div>
+
+              <div class="price-calc-box">
+                <div class="calc-row"><span>Base price subtotal</span><b id="calcSubtotal">$2,480</b></div>
+                <div class="calc-row"><span>Taxes & Concierge fees</span><b>$142</b></div>
+                <div class="calc-row total"><span>Total Amount</span><b id="calcTotal" style="color:var(--secondary);">$2,622</b></div>
+              </div>
+
+              <button class="btn btn-gold btn-block" onclick="triggerSidebarBooking()">Book This Destination</button>
+
+              <div class="guarantee-list">
+                <div class="guarantee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 24/7 Dedicated Trip Concierge</div>
+                <div class="guarantee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Free Cancellation up to 7 days before</div>
+                <div class="guarantee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Best Price Guarantee + 10% Match</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="font-size:20px;">
+            <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+            AZURA
+          </a>
+          <p>Curated journeys and luxury stays across 120+ countries — booked in minutes, remembered for a lifetime.</p>
+          <div class="social-row">
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg></a>
+            <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4.1 4.1 0 0 0-7 3.7A11.6 11.6 0 0 1 3.4 4.6a4.1 4.1 0 0 0 1.3 5.5c-.7 0-1.3-.2-1.9-.5v.1c0 2 1.4 3.6 3.3 4a4.2 4.2 0 0 1-1.9.1 4.1 4.1 0 0 0 3.8 2.9A8.3 8.3 0 0 1 2 18.4a11.6 11.6 0 0 0 6.3 1.8c7.5 0 11.7-6.3 11.7-11.7v-.5c.8-.6 1.5-1.3 2-2.1z"/></svg></a>
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.6h2.6l.4-3h-3v-1.9c0-.9.2-1.5 1.5-1.5h1.6V4.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.4H7.9v3h2.5V21h3.1z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Destinations</h5>
+          <ul>
+            <li><a href="destinations.html?search=Santorini">Santorini, Greece</a></li>
+            <li><a href="destinations.html?search=Bali">Bali, Indonesia</a></li>
+            <li><a href="destinations.html?search=Kyoto">Kyoto, Japan</a></li>
+            <li><a href="destinations.html?search=Swiss">Swiss Alps</a></li>
+            <li><a href="destinations.html?search=Maldives">Maldives</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Cancellation Policy</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Travel Insurance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="index.html#blog">Blog</a></li>
+            <li><a href="#">Partners</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-news">
+          <h5>Stay in the Loop</h5>
+          <p>Curated fare drops, twice a month, straight to your inbox.</p>
+          <form class="footer-news-form" onsubmit="event.preventDefault(); showToast('Subscribed to newsletter!');">
+            <input type="email" placeholder="you@email.com" required>
+            <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 AZURA Travel, Inc. All rights reserved.</span>
+        <div class="payment-row">
+          <span class="pay-chip">Visa</span><span class="pay-chip">Mastercard</span><span class="pay-chip">UPI</span><span class="pay-chip">PayPal</span><span class="pay-chip">Apple Pay</span><span class="pay-chip">G Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================= LIGHTBOX ============================= -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <img id="lightboxImg" src="" alt="Zoomed View">
+  </div>
+
+  <!-- ============================= BOOKING MODAL ============================= -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="booking-modal">
+      <div class="modal-head">
+        <div>
+          <h3 id="bookingTitle">Complete Your Booking</h3>
+          <p id="bookingSub">Step <span id="stepNum">1</span> of 3</p>
+        </div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-steps">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+      </div>
+      <div class="modal-body">
+        <div class="m-step active" id="step1">
+          <div class="trip-summary">
+            <div class="row"><span>Selected Trip</span><b id="sumPkg">Santorini Escape</b></div>
+            <div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+1 555 000 0000"></div>
+            <div class="form-group"><label>Travelers</label><select><option>1 Adult</option><option selected>2 Adults</option><option>Family (4+)</option></select></div>
+          </div>
+          <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
+        </div>
+
+        <div class="m-step" id="step2">
+          <div class="pay-methods">
+            <div class="pay-method selected" data-pay="visa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg>Visa</div>
+            <div class="pay-method" data-pay="mastercard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>Mastercard</div>
+            <div class="pay-method" data-pay="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M18 3 6 21M18 21V3"/></svg>UPI</div>
+          </div>
+          <div id="cardFields">
+            <div class="form-row">
+              <div class="form-group full"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM / YY"></div>
+              <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+            </div>
+          </div>
+          <div class="trip-summary">
+            <div class="row"><span>Package Base</span><b id="sumBase">$1,890</b></div>
+            <div class="row"><span>Taxes & Fees</span><b>$142</b></div>
+            <div class="row total"><span>Total due today</span><b id="sumTotal">$2,032</b></div>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-outline" onclick="goStep(1)">Back</button>
+            <button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button>
+          </div>
+        </div>
+
+        <div class="m-step" id="step3">
+          <div class="success-wrap">
+            <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3>Booking Confirmed!</h3>
+            <p>Your trip is officially on the calendar. A confirmation has been sent to your email.</p>
+            <div class="ref-code" id="refCode">AZ-284915</div>
+            <button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/destination-details.js"></script>
+</body>
+</html>

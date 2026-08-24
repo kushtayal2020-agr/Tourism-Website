@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curated Experiences — AZURA Luxury Travel</title>
+  <meta name="description" content="Discover curated activities, private sunset catamaran cruises, helicopter mountain tours, sommelier wine tastings, and wellness retreats.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/extra-pages.css">
+</head>
+<body>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <nav class="navbar solid-nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+        AZURA
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="packages.html">Packages</a>
+        <a href="experiences.html" class="active">Experiences</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="nav-signin">Sign In</a>
+        <a href="#" class="nav-signup">Sign Up</a>
+        <button class="btn btn-gold btn-sm" onclick="openBooking()">Book Now</button>
+      </div>
+      <button class="nav-toggle" onclick="toggleMobileMenu(true)" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-top">
+      <span class="logo">AZURA</span>
+      <button class="modal-close" style="background:rgba(255,255,255,.1);color:#fff" onclick="toggleMobileMenu(false)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <a href="index.html" onclick="toggleMobileMenu(false)">Home</a>
+    <a href="destinations.html" onclick="toggleMobileMenu(false)">Destinations</a>
+    <a href="packages.html" onclick="toggleMobileMenu(false)">Packages</a>
+    <a href="experiences.html" onclick="toggleMobileMenu(false)">Experiences</a>
+    <a href="about.html" onclick="toggleMobileMenu(false)">About</a>
+    <a href="blog.html" onclick="toggleMobileMenu(false)">Blog</a>
+    <a href="contact.html" onclick="toggleMobileMenu(false)">Contact</a>
+    <div class="mobile-menu-actions">
+      <button class="btn btn-ghost btn-block">Sign In</button>
+      <button class="btn btn-gold btn-block" onclick="toggleMobileMenu(false);openBooking()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- ============================= PAGE HERO ============================= -->
+  <section class="page-hero" style="padding-top: 150px;">
+    <div class="page-hero-bg"></div>
+    <div class="container page-hero-content">
+      <span class="eyebrow"><span class="stamp-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> Unforgettable Excursions</span>
+      <h1>Curated <span class="grad-text">Experiences</span></h1>
+      <p>Elevate your journey with private yacht charters, mountain helicopter flights, sommelier tastings, and artisan cultural workshops.</p>
+    </div>
+  </section>
+
+  <!-- ============================= EXPERIENCES LIST SECTION ============================= -->
+  <section class="section" style="padding-top:60px;">
+    <div class="container">
+
+      <!-- Category Filter Pills -->
+      <div class="cat-pills-row" style="margin-bottom:36px;justify-content:center;">
+        <button class="cat-pill exp-cat-pill active" data-cat="all">All Experiences</button>
+        <button class="cat-pill exp-cat-pill" data-cat="water">Sailing & Water</button>
+        <button class="cat-pill exp-cat-pill" data-cat="adventure">Adventure & Aerial</button>
+        <button class="cat-pill exp-cat-pill" data-cat="culinary">Wine & Culinary</button>
+        <button class="cat-pill exp-cat-pill" data-cat="wellness">Spa & Wellness</button>
+        <button class="cat-pill exp-cat-pill" data-cat="cultural">Cultural Workshops</button>
+      </div>
+
+      <!-- Experience Cards Grid -->
+      <div class="exp-grid" id="experiencesListGrid"></div>
+
+    </div>
+  </section>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="font-size:20px;">
+            <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+            AZURA
+          </a>
+          <p>Curated journeys and luxury stays across 120+ countries — booked in minutes, remembered for a lifetime.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="experiences.html">Experiences</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="contact.html">Contact Desk</a></li>
+            <li><a href="contact.html#faq">FAQ Center</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 AZURA Travel, Inc. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOOKING MODAL & TOAST -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="booking-modal">
+      <div class="modal-head">
+        <div><h3 id="bookingTitle">Reserve Experience</h3><p id="bookingSub">Step <span id="stepNum">1</span> of 3</p></div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-steps"><div class="step-dot active" id="dot1"></div><div class="step-dot" id="dot2"></div><div class="step-dot" id="dot3"></div></div>
+      <div class="modal-body">
+        <div class="m-step active" id="step1">
+          <div class="trip-summary"><div class="row"><span>Selected Experience</span><b id="sumPkg">Sunset Cruise</b></div><div class="row"><span>Duration</span><b id="sumDur">5 Hours</b></div></div>
+          <div class="form-row"><div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div><div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div></div>
+          <div class="form-row"><div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div></div>
+          <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
+        </div>
+        <div class="m-step" id="step2">
+          <div class="trip-summary"><div class="row"><span>Experience Subtotal</span><b id="sumBase">$220</b></div><div class="row"><span>Taxes & Fees</span><b>$25</b></div><div class="row total"><span>Total</span><b id="sumTotal">$245</b></div></div>
+          <div class="modal-actions"><button class="btn btn-outline" onclick="goStep(1)">Back</button><button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button></div>
+        </div>
+        <div class="m-step" id="step3">
+          <div class="success-wrap"><div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h3>Reservation Confirmed!</h3><div class="ref-code" id="refCode">AZ-284915</div><button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/extra-pages.js"></script>
+</body>
+</html>

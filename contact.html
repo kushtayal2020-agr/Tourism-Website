@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & 24/7 Support — AZURA Luxury Travel</title>
+  <meta name="description" content="Reach AZURA's 24/7 global concierge desk, submit travel inquiries, view global office locations, and explore our FAQ center.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/extra-pages.css">
+</head>
+<body>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <nav class="navbar solid-nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+        AZURA
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="packages.html">Packages</a>
+        <a href="experiences.html">Experiences</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html" class="active">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="nav-signin">Sign In</a>
+        <a href="#" class="nav-signup">Sign Up</a>
+        <button class="btn btn-gold btn-sm" onclick="openBooking()">Book Now</button>
+      </div>
+      <button class="nav-toggle" onclick="toggleMobileMenu(true)" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-top">
+      <span class="logo">AZURA</span>
+      <button class="modal-close" style="background:rgba(255,255,255,.1);color:#fff" onclick="toggleMobileMenu(false)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <a href="index.html" onclick="toggleMobileMenu(false)">Home</a>
+    <a href="destinations.html" onclick="toggleMobileMenu(false)">Destinations</a>
+    <a href="packages.html" onclick="toggleMobileMenu(false)">Packages</a>
+    <a href="experiences.html" onclick="toggleMobileMenu(false)">Experiences</a>
+    <a href="about.html" onclick="toggleMobileMenu(false)">About</a>
+    <a href="blog.html" onclick="toggleMobileMenu(false)">Blog</a>
+    <a href="contact.html" onclick="toggleMobileMenu(false)">Contact</a>
+    <div class="mobile-menu-actions">
+      <button class="btn btn-ghost btn-block">Sign In</button>
+      <button class="btn btn-gold btn-block" onclick="toggleMobileMenu(false);openBooking()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- ============================= PAGE HERO ============================= -->
+  <section class="page-hero" style="padding-top: 150px;">
+    <div class="page-hero-bg"></div>
+    <div class="container page-hero-content">
+      <span class="eyebrow"><span class="stamp-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span> 24/7 Dedicated Desk</span>
+      <h1>Get in <span class="grad-text">Touch</span></h1>
+      <p>Whether planning your dream itinerary or seeking on-trip support, our global concierge specialists are at your service 24/7.</p>
+    </div>
+  </section>
+
+  <!-- ============================= CONTACT FORM & GLOBAL DESKS ============================= -->
+  <section class="section" style="padding-top:60px;">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Left Column: Contact Form -->
+        <div style="background:var(--card-solid);border:1px solid var(--line);border-radius:var(--r-xl);padding:36px;box-shadow:var(--shadow-sm);">
+          <h3 style="font-size:24px;font-weight:800;margin-bottom:8px;">Send a Concierge Inquiry</h3>
+          <p style="color:var(--muted);font-size:14.5px;margin-bottom:28px;">Fill out the form below and an AZURA travel specialist will contact you within 2 hours.</p>
+
+          <form id="contactForm" onsubmit="return submitContactForm(event)">
+            <div class="form-row">
+              <div class="form-group"><label>First Name *</label><input type="text" placeholder="Jane" required></div>
+              <div class="form-group"><label>Last Name *</label><input type="text" placeholder="Doe" required></div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group"><label>Email Address *</label><input type="email" placeholder="jane@email.com" required></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+1 (555) 000-0000"></div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group full">
+                <label>Inquiry Subject</label>
+                <select>
+                  <option>Custom Luxury Itinerary Planning</option>
+                  <option>Package Booking Modification</option>
+                  <option>Yacht / Helicopter Private Charter</option>
+                  <option>General Support / Feedback</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group full">
+                <label>Your Message / Travel Details *</label>
+                <textarea rows="5" placeholder="Tell us about your desired destination, travel dates, guest count, or special requests..." required></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top:10px;">Send Message</button>
+          </form>
+        </div>
+
+        <!-- Right Column: Global Desks -->
+        <div>
+          <h3 style="font-size:24px;font-weight:800;margin-bottom:20px;">Global Offices</h3>
+
+          <div class="desk-card">
+            <div class="desk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div>
+              <h4 style="font-size:17px;font-weight:800;margin-bottom:4px;">New York (Headquarters)</h4>
+              <div style="font-size:13.5px;color:var(--muted);line-height:1.6;">
+                575 Fifth Avenue, 28th Floor<br>New York, NY 10017, USA<br>
+                <b>Tel:</b> +1 (800) 555-AZURA
+              </div>
+            </div>
+          </div>
+
+          <div class="desk-card">
+            <div class="desk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div>
+              <h4 style="font-size:17px;font-weight:800;margin-bottom:4px;">London Desk</h4>
+              <div style="font-size:13.5px;color:var(--muted);line-height:1.6;">
+                14 Mayfair Place, Mayfair<br>London W1J 8AJ, UK<br>
+                <b>Tel:</b> +44 20 7946 0912
+              </div>
+            </div>
+          </div>
+
+          <div class="desk-card">
+            <div class="desk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div>
+              <h4 style="font-size:17px;font-weight:800;margin-bottom:4px;">Tokyo Desk</h4>
+              <div style="font-size:13.5px;color:var(--muted);line-height:1.6;">
+                Roppongi Hills Mori Tower 34F<br>Minato City, Tokyo, Japan<br>
+                <b>Tel:</b> +81 3 5555 0143
+              </div>
+            </div>
+          </div>
+
+          <div style="background:linear-gradient(135deg,#1E3A8A,#0F172A);color:#fff;border-radius:var(--r-lg);padding:24px;margin-top:20px;">
+            <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:6px;">Urgent On-Trip Support</div>
+            <div style="font-size:18px;font-weight:800;margin-bottom:6px;">24/7 Emergency Line</div>
+            <div style="font-size:13.5px;color:rgba(255,255,255,0.75);">Instant assistance for active flight changes, villa transfers, or medical emergencies.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= FAQ ACCORDION SECTION ============================= -->
+  <section class="section" id="faq" style="background:linear-gradient(180deg,#F8FAFC,#EEF2FA);">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow"><span class="stamp-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> Helpful Information</span>
+        <h2>Frequently Asked <span class="grad-text">Questions</span></h2>
+        <p>Answers to common questions about booking, payments, cancellations, and travel insurance.</p>
+      </div>
+
+      <div class="faq-accordion" id="faqsAccordionContainer"></div>
+    </div>
+  </section>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="logo" style="font-size:20px;">
+            <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+            AZURA
+          </a>
+          <p>Curated journeys and luxury stays across 120+ countries — booked in minutes, remembered for a lifetime.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="experiences.html">Experiences</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="contact.html">Contact Desk</a></li>
+            <li><a href="contact.html#faq">FAQ Center</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 AZURA Travel, Inc. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BOOKING MODAL & TOAST -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="booking-modal">
+      <div class="modal-head">
+        <div><h3 id="bookingTitle">Complete Your Booking</h3><p id="bookingSub">Step <span id="stepNum">1</span> of 3</p></div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-steps"><div class="step-dot active" id="dot1"></div><div class="step-dot" id="dot2"></div><div class="step-dot" id="dot3"></div></div>
+      <div class="modal-body">
+        <div class="m-step active" id="step1">
+          <div class="trip-summary"><div class="row"><span>Package</span><b id="sumPkg">Santorini Escape</b></div><div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div></div>
+          <div class="form-row"><div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div><div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div></div>
+          <div class="form-row"><div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div></div>
+          <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
+        </div>
+        <div class="m-step" id="step2">
+          <div class="trip-summary"><div class="row"><span>Base</span><b id="sumBase">$1,890</b></div><div class="row"><span>Taxes</span><b>$142</b></div><div class="row total"><span>Total</span><b id="sumTotal">$2,032</b></div></div>
+          <div class="modal-actions"><button class="btn btn-outline" onclick="goStep(1)">Back</button><button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button></div>
+        </div>
+        <div class="m-step" id="step3">
+          <div class="success-wrap"><div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h3>Booking Confirmed!</h3><div class="ref-code" id="refCode">AZ-284915</div><button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/extra-pages.js"></script>
+</body>
+</html>
