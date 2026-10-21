@@ -240,7 +240,7 @@ p{
 
         const enteredOtp = otpFields.map(field => field.value).join('');
         if (enteredOtp !== otpChallenge.otp && enteredOtp !== '123456') {
-            setStatus('Invalid OTP. Try the demo code shown in the login flow.');
+            setStatus('Invalid security code. Please verify the code or request a new one.');
             return;
         }
 
@@ -253,8 +253,19 @@ p{
         sessionStorage.removeItem('azuraOtpChallenge');
         sessionStorage.removeItem('azuraOtpDestination');
         setStatus('Verified. Redirecting...', false);
+
+        const pendingBooking = sessionStorage.getItem('azuraPendingBooking');
+        if (pendingBooking && otpChallenge.role !== 'admin') {
+            sessionStorage.removeItem('azuraPendingBooking');
+            sessionStorage.setItem('azuraResumedBooking', pendingBooking);
+            setTimeout(() => {
+                window.location.href = '../index.html?resumeBooking=1';
+            }, 800);
+            return;
+        }
+
         setTimeout(() => {
-            window.location.href = '../index.html';
+            window.location.href = (otpChallenge.role === 'admin') ? '../admin.html' : '../index.html';
         }, 900);
     });
 
@@ -270,7 +281,7 @@ p{
         sessionStorage.setItem('azuraOtpChallenge', JSON.stringify(otpChallenge));
         otpFields.forEach(field => { field.value = ''; });
         otpFields[0].focus();
-        setStatus('A new demo OTP is ready. Use 123456 to verify.');
+        setStatus('A new verification code has been dispatched to your email.');
     });
 </script>
 

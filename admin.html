@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations Console — AZURA</title>
+  <meta name="description" content="AZURA Enterprise Administrator Dashboard for managing global destinations, customer bookings, database triggers, and audit logs.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <style>
+    /* ============================= ADMIN STYLES ============================= */
+    body { background: #0B1120; color: #F1F5F9; }
+    .admin-navbar {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky; top: 0; z-index: 1000;
+      backdrop-filter: blur(20px);
+      padding: 16px 0;
+    }
+    .admin-nav-inner {
+      max-width: 1400px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .admin-brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .admin-badge-tag {
+      background: rgba(251, 191, 36, 0.18);
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 9px;
+      border-radius: 6px;
+    }
+    .db-status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34D399;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+    }
+    .db-status-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulseGreen 2s infinite;
+    }
+    @keyframes pulseGreen { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+
+    /* Main Container */
+    .admin-wrap {
+      max-width: 1400px; margin: 0 auto; padding: 36px 32px 80px;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .kpi-head {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .kpi-head span {
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8;
+    }
+    .kpi-head svg {
+      width: 20px; height: 20px; opacity: 0.8;
+    }
+    .kpi-val {
+      font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.02em;
+    }
+    .kpi-sub {
+      font-size: 12px; color: #64748B; font-weight: 600;
+    }
+
+    /* Tabs */
+    .admin-nav-tabs {
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 16px;
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .admin-tab-btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #94A3B8;
+      background: transparent;
+      border: 1px solid transparent;
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+    .admin-tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+    .admin-tab-btn.active {
+      color: #0F172A;
+      background: var(--gold);
+      box-shadow: 0 4px 15px -3px rgba(251, 191, 36, 0.4);
+    }
+    .admin-tab-btn .tab-count {
+      background: rgba(0, 0, 0, 0.2);
+      color: inherit;
+      padding: 2px 7px;
+      border-radius: 100px;
+      font-size: 11px;
+    }
+
+    /* Content Card */
+    .admin-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.5);
+    }
+    .table-top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; margin-bottom: 24px;
+    }
+    .search-box-admin {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 10px 16px;
+      max-width: 380px; width: 100%;
+    }
+    .search-box-admin input {
+      background: transparent; border: none; color: #fff; font-size: 14px; width: 100%; outline: none;
+    }
+    .search-box-admin svg { width: 16px; height: 16px; color: #94A3B8; }
+
+    /* Tables */
+    .admin-table-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13.5px;
+    }
+    table.admin-table th {
+      background: rgba(15, 23, 42, 0.85);
+      color: #94A3B8;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+    table.admin-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #E2E8F0;
+      vertical-align: middle;
+    }
+    table.admin-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Badges */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 100px;
+      font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .status-confirmed { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-cancelled { background: rgba(239, 68, 68, 0.15); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-pending   { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    /* Trigger Audit Logs Card */
+    .audit-grid {
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .audit-item {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .audit-item-head {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    }
+    .audit-tag {
+      font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 3px 8px; border-radius: 6px;
+    }
+    .audit-tag-insert { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .audit-tag-update { background: rgba(59, 130, 246, 0.2); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .audit-json-box {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: monospace;
+      font-size: 12.5px;
+      color: #94A3B8;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Access Denied Card */
+    .access-denied-wrap {
+      max-width: 520px; margin: 80px auto; text-align: center;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 24px; padding: 48px 36px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================= ADMIN NAVBAR ============================= -->
+  <header class="admin-navbar">
+    <div class="admin-nav-inner">
+      <div class="admin-brand">
+        <a href="index.html" class="logo">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+          AZURA
+        </a>
+        <span class="admin-badge-tag">Operations Console</span>
+        <span class="db-status-pill">
+          <span class="db-status-dot"></span>
+          MySQL 8.0 Live
+        </span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a href="dashboard.html" class="btn btn-ghost btn-sm" style="font-size:13px;">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Traveler View
+        </a>
+        <a href="index.html" class="btn btn-ghost btn-sm" style="font-size:13px;">
+          Website
+        </a>
+        <button class="btn btn-outline btn-sm" style="color:#F87171;border-color:rgba(248,113,113,0.35);" onclick="logoutAzuraUser()">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================= ACCESS RESTRICTED GUARD ============================= -->
+  <div id="accessDeniedPanel" style="display:none;">
+    <div class="access-denied-wrap">
+      <div style="width:68px;height:68px;border-radius:50%;background:rgba(239,68,68,0.15);color:#EF4444;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:8px;">Access Restricted</h2>
+      <p style="color:#94A3B8;font-size:14.5px;line-height:1.5;margin-bottom:24px;">
+        The Admin Console requires an account with Administrator privileges (<code style="color:var(--gold);">role = 'Admin'</code> in MySQL).
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;">
+        <a href="login.html" class="btn btn-gold btn-block">Sign In with Administrator Account</a>
+        <a href="dashboard.html" class="btn btn-ghost btn-block">Go to Traveler Dashboard</a>
+        <a href="index.html" class="btn btn-outline btn-block" style="color:#fff;">Back to Homepage</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================= ADMIN MAIN APP ============================= -->
+  <main class="admin-wrap" id="adminMainContent">
+
+    <!-- KPI Metrics Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span>Gross Platform Revenue</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="kpi-val" id="kpiRevenue" style="color:var(--gold);">$0</div>
+        <div class="kpi-sub">Across 1,007+ confirmed bookings</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span>Total Bookings</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="kpi-val" id="kpiBookings">0</div>
+        <div class="kpi-sub">Live MySQL bookings table count</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span>Active Destinations</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
+        <div class="kpi-val" id="kpiDestinations">0</div>
+        <div class="kpi-sub">Santorini, Bali, Alps, Gwalior & more</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span>Tour Packages</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C084FC" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <div class="kpi-val" id="kpiPackages">0</div>
+        <div class="kpi-sub">Curated luxury itineraries</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-head">
+          <span>Registered Accounts</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="kpi-val" id="kpiUsers">0</div>
+        <div class="kpi-sub">Admins & verified customers</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-nav-tabs">
+      <button class="admin-tab-btn active" onclick="switchAdminTab('bookings', this)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Bookings Manager <span class="tab-count" id="tabCountBookings">...</span>
+      </button>
+
+      <button class="admin-tab-btn" onclick="switchAdminTab('audit', this)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Trigger Audit Logs <span class="tab-count" id="tabCountAudit">DBMS Live</span>
+      </button>
+
+      <button class="admin-tab-btn" onclick="switchAdminTab('destinations', this)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Destinations
+      </button>
+
+      <button class="admin-tab-btn" onclick="switchAdminTab('users', this)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        User Accounts
+      </button>
+    </div>
+
+    <!-- TAB 1: BOOKINGS MANAGER -->
+    <div id="adminTabBookings" class="admin-panel-tab">
+      <div class="admin-card">
+        <div class="table-top-bar">
+          <div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;">Platform Bookings</h2>
+            <p style="color:#94A3B8;font-size:13px;">Manage and monitor all customer package reservations recorded in MySQL.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="search-box-admin">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="bookingSearchInput" placeholder="Search by customer, email or ID..." oninput="filterAdminBookings()">
+            </div>
+            <select id="bookingStatusFilter" onchange="filterAdminBookings()" style="background:#0F172A;color:#fff;border:1px solid rgba(255,255,255,0.15);padding:10px 14px;border-radius:12px;font-size:13px;font-weight:600;">
+              <option value="all">All Statuses</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Pending">Pending</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <button class="btn btn-gold btn-sm" onclick="openBooking()" style="padding:9px 18px;font-size:13px;display:flex;align-items:center;gap:6px;">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              + Book New Trip
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Package & Destination</th>
+                <th>Date</th>
+                <th>Travelers</th>
+                <th>Total ($)</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminBookingsTbody">
+              <tr><td colspan="8" style="text-align:center;padding:30px;color:#94A3B8;">Loading bookings from MySQL API...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: TRIGGER AUDIT LOGS -->
+    <div id="adminTabAudit" class="admin-panel-tab" style="display:none;">
+      <div class="admin-card">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;">Database Trigger Audit Trail (MySQL 8.0)</h2>
+          <p style="color:#94A3B8;font-size:13px;">
+            Live events captured automatically by <code style="color:var(--gold);">after_booking_insert</code>, <code style="color:var(--gold);">after_booking_update</code>, and <code style="color:var(--gold);">after_payment_update</code> triggers.
+          </p>
+        </div>
+
+        <div class="audit-grid" id="auditLogsContainer">
+          <div style="text-align:center;padding:30px;color:#94A3B8;">Loading audit logs...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: DESTINATIONS -->
+    <div id="adminTabDestinations" class="admin-panel-tab" style="display:none;">
+      <div class="admin-card">
+        <div class="table-top-bar">
+          <div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;">Catalog Destinations</h2>
+            <p style="color:#94A3B8;font-size:13px;">Browse active destinations stored in the `destinations` table.</p>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Destination</th>
+                <th>Country</th>
+                <th>Rating</th>
+                <th>Base Price</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody id="adminDestTbody">
+              <tr><td colspan="6" style="text-align:center;padding:30px;color:#94A3B8;">Loading destinations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: USERS -->
+    <div id="adminTabUsers" class="admin-panel-tab" style="display:none;">
+      <div class="admin-card">
+        <div class="table-top-bar">
+          <div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:4px;">Registered User Accounts</h2>
+            <p style="color:#94A3B8;font-size:13px;">Accounts registered in MySQL `users` table.</p>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminUsersTbody">
+              <tr><td colspan="6" style="text-align:center;padding:30px;color:#94A3B8;">Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================= BOOKING MODAL ============================= -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="booking-modal">
+      <div class="modal-head">
+        <div><h3 id="bookingTitle">Complete Your Booking</h3><p id="bookingSub">Step <span id="stepNum">1</span> of 3</p></div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-steps"><div class="step-dot active" id="dot1"></div><div class="step-dot" id="dot2"></div><div class="step-dot" id="dot3"></div></div>
+      <div class="modal-body">
+        <div class="m-step active" id="step1">
+          <div class="trip-summary"><div class="row"><span>Selected Trip</span><b id="sumPkg">Santorini Escape</b></div><div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div></div>
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" id="bookFirstName" placeholder="First Name" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="bookLastName" placeholder="Last Name" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Email Address</label><input type="email" id="bookEmail" placeholder="name@gmail.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="bookPhone" placeholder="Mobile Number"></div>
+            <div class="form-group"><label>Travelers</label><select id="bookTravelers" onchange="updateBookingCalculation()"><option value="1">1 Adult</option><option value="2" selected>2 Adults</option><option value="3">3 Adults</option><option value="4">Family (4)</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Departure Date</label><input type="date" id="bookDate"></div>
+          </div>
+          <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
+        </div>
+        <div class="m-step" id="step2">
+          <div class="pay-methods">
+            <div class="pay-method selected" data-pay="visa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg>Visa</div>
+            <div class="pay-method" data-pay="mastercard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>Mastercard</div>
+            <div class="pay-method" data-pay="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M18 3 6 21M18 21V3"/></svg>UPI</div>
+          </div>
+          <div id="cardFields">
+            <div class="form-row">
+              <div class="form-group full"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM / YY"></div>
+              <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+            </div>
+          </div>
+          <div class="trip-summary"><div class="row"><span>Package Base</span><b id="sumBase">$1,890</b></div><div class="row"><span>Taxes & Fees</span><b>$142</b></div><div class="row total"><span>Total</span><b id="sumTotal">$2,032</b></div></div>
+          <div class="modal-actions"><button class="btn btn-outline" onclick="goStep(1)">Back</button><button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button></div>
+        </div>
+        <div class="m-step" id="step3">
+          <div class="success-wrap"><div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h3>Booking Confirmed!</h3><div class="ref-code" id="refCode">—</div><button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js?v=2.6"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    let allAdminBookings = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = getAzuraCurrentUser();
+      const isAdmin = (user && user.role && user.role.toLowerCase() === 'admin');
+
+      if (!isAdmin) {
+        document.getElementById('accessDeniedPanel').style.display = 'block';
+        document.getElementById('adminMainContent').style.display = 'none';
+        return;
+      }
+
+      // Load all admin modules
+      loadKPIs();
+      loadAdminBookings();
+      loadAuditLogs();
+      loadAdminDestinations();
+      loadAdminUsers();
+    });
+
+    async function loadKPIs() {
+      try {
+        const res = await fetch('/api/stats');
+        const json = await res.json();
+        if (res.ok && json.success) {
+          const d = json.data;
+          document.getElementById('kpiRevenue').textContent = '$' + Number(d.totalRevenue).toLocaleString();
+          document.getElementById('kpiBookings').textContent = Number(d.bookings).toLocaleString();
+          document.getElementById('kpiDestinations').textContent = d.destinations;
+          document.getElementById('kpiPackages').textContent = d.packages;
+          document.getElementById('kpiUsers').textContent = d.users;
+        }
+      } catch (err) {
+        console.error('Failed to load stats:', err);
+      }
+    }
+
+    async function loadAdminBookings() {
+      const tbody = document.getElementById('adminBookingsTbody');
+      const token = localStorage.getItem('azuraAuthToken');
+
+      try {
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch('/api/bookings', { headers });
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+          allAdminBookings = json.data;
+          document.getElementById('tabCountBookings').textContent = allAdminBookings.length;
+          renderAdminBookings(allAdminBookings);
+        } else {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:#EF4444;">${json.message || 'Error loading bookings'}</td></tr>`;
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:#EF4444;">Failed to connect to API server.</td></tr>`;
+      }
+    }
+
+    function renderAdminBookings(list) {
+      const tbody = document.getElementById('adminBookingsTbody');
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:24px;color:#94A3B8;">No bookings match filter criteria.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.slice(0, 50).map(b => {
+        const isCancelled = (b.booking_status === 'Cancelled');
+        const isConfirmed = (b.booking_status === 'Confirmed');
+        const statusClass = isCancelled ? 'status-cancelled' : (isConfirmed ? 'status-confirmed' : 'status-pending');
+        const dateStr = b.booking_date ? new Date(b.booking_date).toLocaleDateString() : '-';
+
+        return `
+          <tr>
+            <td><b style="color:var(--gold);">#${b.booking_id}</b></td>
+            <td>
+              <div style="font-weight:700;color:#fff;">${b.customer_name || 'Customer'}</div>
+              <div style="font-size:12px;color:#94A3B8;">${b.customer_email || ''}</div>
+            </td>
+            <td>
+              <div style="font-weight:600;color:#fff;">${b.package_name || 'Tour'}</div>
+              <div style="font-size:12px;color:#94A3B8;">${b.destination_name ? `${b.destination_name}, ${b.country}` : ''}</div>
+            </td>
+            <td>${dateStr}</td>
+            <td>${b.number_of_travelers || 1}</td>
+            <td><b style="color:#fff;">$${Number(b.total_amount).toLocaleString()}</b></td>
+            <td><span class="status-badge ${statusClass}">${b.booking_status || 'Pending'}</span></td>
+            <td>
+              ${!isCancelled ? `
+                <button class="btn btn-outline btn-sm" style="color:#F87171;border-color:rgba(248,113,113,0.3);font-size:12px;padding:6px 12px;" onclick="cancelBookingAsAdmin(${b.booking_id})">
+                  Cancel
+                </button>
+              ` : `
+                <span style="font-size:12px;color:#64748B;">Cancelled</span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterAdminBookings() {
+      const q = (document.getElementById('bookingSearchInput').value || '').toLowerCase();
+      const status = document.getElementById('bookingStatusFilter').value;
+
+      const filtered = allAdminBookings.filter(b => {
+        const matchesQuery = !q ||
+          (b.customer_name && b.customer_name.toLowerCase().includes(q)) ||
+          (b.customer_email && b.customer_email.toLowerCase().includes(q)) ||
+          (b.package_name && b.package_name.toLowerCase().includes(q)) ||
+          String(b.booking_id).includes(q);
+
+        const matchesStatus = (status === 'all') || (b.booking_status === status);
+        return matchesQuery && matchesStatus;
+      });
+
+      renderAdminBookings(filtered);
+    }
+
+    async function cancelBookingAsAdmin(id) {
+      if (!confirm(`Are you sure you want to cancel Booking #${id}?`)) return;
+      const token = localStorage.getItem('azuraAuthToken');
+
+      try {
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch(`/api/bookings/${id}/cancel`, { method: 'PUT', headers });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          showToast(`✓ Booking #${id} cancelled`);
+          loadAdminBookings();
+          loadAuditLogs();
+          loadKPIs();
+        } else {
+          showToast(json.message || 'Error cancelling booking');
+        }
+      } catch (err) {
+        showToast('Server error while cancelling booking');
+      }
+    }
+
+    async function loadAuditLogs() {
+      const container = document.getElementById('auditLogsContainer');
+      try {
+        const res = await fetch('/api/audit-logs');
+        const json = await res.json();
+        if (res.ok && json.success && Array.isArray(json.data)) {
+          renderAuditLogs(json.data);
+        }
+      } catch (err) {
+        container.innerHTML = `<div style="color:#EF4444;text-align:center;">Failed to fetch audit logs.</div>`;
+      }
+    }
+
+    function renderAuditLogs(logs) {
+      const container = document.getElementById('auditLogsContainer');
+      if (logs.length === 0) {
+        container.innerHTML = `<div style="text-align:center;color:#94A3B8;">No audit log records found.</div>`;
+        return;
+      }
+
+      container.innerHTML = logs.map(l => {
+        const isInsert = (l.action === 'INSERT');
+        const tagClass = isInsert ? 'audit-tag-insert' : 'audit-tag-update';
+        const changedAt = l.changed_at ? new Date(l.changed_at).toLocaleString() : '';
+
+        return `
+          <div class="audit-item">
+            <div class="audit-item-head">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="audit-tag ${tagClass}">${l.action}</span>
+                <span style="font-weight:700;color:#fff;">${l.table_name}</span>
+                <span style="color:#94A3B8;font-size:12px;">Record ID: #${l.record_id}</span>
+                ${l.user_id ? `<span style="color:var(--gold);font-size:12px;">User ID: #${l.user_id}</span>` : ''}
+              </div>
+              <span style="font-size:12px;color:#64748B;">${changedAt}</span>
+            </div>
+
+            ${l.old_data ? `
+              <div style="font-size:12px;font-weight:600;color:#EF4444;">Before (Old State):</div>
+              <div class="audit-json-box">${typeof l.old_data === 'object' ? JSON.stringify(l.old_data, null, 2) : l.old_data}</div>
+            ` : ''}
+
+            <div style="font-size:12px;font-weight:600;color:#10B981;">Snapshot (New State):</div>
+            <div class="audit-json-box">${typeof l.new_data === 'object' ? JSON.stringify(l.new_data, null, 2) : l.new_data}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function loadAdminDestinations() {
+      const tbody = document.getElementById('adminDestTbody');
+      try {
+        const res = await fetch('/api/destinations');
+        const json = await res.json();
+        if (res.ok && json.success) {
+          tbody.innerHTML = json.data.slice(0, 30).map(d => `
+            <tr>
+              <td><b style="color:var(--gold);">#${d.destination_id}</b></td>
+              <td><b style="color:#fff;">${d.name}</b></td>
+              <td>${d.country}</td>
+              <td>⭐ ${d.rating}</td>
+              <td>$${Number(d.price).toLocaleString()}</td>
+              <td style="max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#94A3B8;">${d.description || '-'}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (_) { }
+    }
+
+    async function loadAdminUsers() {
+      const tbody = document.getElementById('adminUsersTbody');
+      const token = localStorage.getItem('azuraAuthToken');
+      try {
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch('/api/auth/users', { headers });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          tbody.innerHTML = json.data.map(u => `
+            <tr>
+              <td><b style="color:var(--gold);">#${u.user_id}</b></td>
+              <td><b style="color:#fff;">${u.name}</b></td>
+              <td>${u.email}</td>
+              <td>${u.phone || 'N/A'}</td>
+              <td>
+                <span class="role-chip ${u.role === 'Admin' ? 'admin-chip' : 'customer-chip'}">${u.role}</span>
+              </td>
+              <td>
+                ${u.role === 'Admin' ? `
+                  <button class="btn btn-ghost btn-sm" style="font-size:11.5px;padding:5px 12px;color:#94A3B8;" onclick="toggleUserRole(${u.user_id}, 'Customer')">Set as Traveler</button>
+                ` : `
+                  <button class="btn btn-outline btn-sm" style="font-size:11.5px;padding:5px 12px;color:var(--gold);border-color:rgba(251,191,36,0.35);" onclick="toggleUserRole(${u.user_id}, 'Admin')">Promote to Admin</button>
+                `}
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (_) { }
+    }
+
+    async function toggleUserRole(userId, newRole) {
+      if (!confirm(`Are you sure you want to change User #${userId} to ${newRole}?`)) return;
+      const token = localStorage.getItem('azuraAuthToken');
+      try {
+        const res = await fetch('/api/auth/role', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ user_id: userId, role: newRole })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(`✓ User #${userId} is now ${newRole}`);
+          loadAdminUsers();
+          loadKPIs();
+        } else {
+          showToast(data.message || 'Error updating user role');
+        }
+      } catch (err) {
+        showToast('Server communication error');
+      }
+    }
+
+    function switchAdminTab(tab, btn) {
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.admin-panel-tab').forEach(p => p.style.display = 'none');
+      if (tab === 'bookings')     document.getElementById('adminTabBookings').style.display = 'block';
+      if (tab === 'audit')        document.getElementById('adminTabAudit').style.display = 'block';
+      if (tab === 'destinations') document.getElementById('adminTabDestinations').style.display = 'block';
+      if (tab === 'users')        document.getElementById('adminTabUsers').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

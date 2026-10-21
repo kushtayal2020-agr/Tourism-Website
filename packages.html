@@ -7,6 +7,7 @@
   <meta name="description" content="Explore bundled all-inclusive luxury travel packages with 5-star hotel suites, private transfers, and guided itineraries worldwide.">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/extra-pages.css">
+  <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 
@@ -168,8 +169,20 @@
       <div class="modal-body">
         <div class="m-step active" id="step1">
           <div class="trip-summary"><div class="row"><span>Selected Trip</span><b id="sumPkg">Santorini Escape</b></div><div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div></div>
-          <div class="form-row"><div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div><div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div></div>
-          <div class="form-row"><div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div></div>
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" id="bookFirstName" placeholder="First Name" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="bookLastName" placeholder="Last Name" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Email Address</label><input type="email" id="bookEmail" placeholder="name@gmail.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="bookPhone" placeholder="Mobile Number"></div>
+            <div class="form-group"><label>Travelers</label><select id="bookTravelers" onchange="updateBookingCalculation()"><option value="1">1 Adult</option><option value="2" selected>2 Adults</option><option value="3">3 Adults</option><option value="4">Family (4)</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Departure Date</label><input type="date" id="bookDate"></div>
+          </div>
           <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
         </div>
         <div class="m-step" id="step2">
@@ -177,7 +190,7 @@
           <div class="modal-actions"><button class="btn btn-outline" onclick="goStep(1)">Back</button><button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button></div>
         </div>
         <div class="m-step" id="step3">
-          <div class="success-wrap"><div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h3>Booking Confirmed!</h3><div class="ref-code" id="refCode">AZ-284915</div><button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button></div>
+          <div class="success-wrap"><div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h3>Booking Confirmed!</h3><div class="ref-code" id="refCode">—</div><button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button></div>
         </div>
       </div>
     </div>
@@ -186,7 +199,8 @@
   <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
 
   <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=2.6"></script>
   <script src="js/extra-pages.js"></script>
+  <script src="js/chatbot.js"></script>
 </body>
 </html>

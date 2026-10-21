@@ -7,6 +7,7 @@
   <meta name="description" content="Browse and search curated luxury travel destinations around the world. Filter by country, category, budget, and rating.">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/destinations.css">
+  <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 
@@ -252,15 +253,18 @@
             <div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div>
-            <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div>
+            <div class="form-group"><label>First Name</label><input type="text" id="bookFirstName" placeholder="First Name" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="bookLastName" placeholder="Last Name" required></div>
           </div>
           <div class="form-row">
-            <div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div>
+            <div class="form-group full"><label>Email Address</label><input type="email" id="bookEmail" placeholder="name@gmail.com" required></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+1 555 000 0000"></div>
-            <div class="form-group"><label>Travelers</label><select><option>1 Adult</option><option selected>2 Adults</option><option>Family (4+)</option></select></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="bookPhone" placeholder="Mobile Number"></div>
+            <div class="form-group"><label>Travelers</label><select id="bookTravelers" onchange="updateBookingCalculation()"><option value="1">1 Adult</option><option value="2" selected>2 Adults</option><option value="3">3 Adults</option><option value="4">Family (4)</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Departure Date</label><input type="date" id="bookDate"></div>
           </div>
           <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
         </div>
@@ -296,7 +300,7 @@
             <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <h3>Booking Confirmed!</h3>
             <p>Your trip is officially on the calendar. A confirmation has been sent to your email.</p>
-            <div class="ref-code" id="refCode">AZ-284915</div>
+            <div class="ref-code" id="refCode">—</div>
             <button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button>
           </div>
         </div>
@@ -307,7 +311,8 @@
   <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
 
   <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=2.6"></script>
   <script src="js/destinations.js"></script>
+  <script src="js/chatbot.js"></script>
 </body>
 </html>

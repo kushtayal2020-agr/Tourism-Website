@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traveler Dashboard & Bookings — AZURA</title>
+  <meta name="description" content="View your confirmed AZURA travel itineraries, track bookings in real time, and manage your personal travel preferences.">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <style>
+    /* ============================= DASHBOARD STYLES ============================= */
+    .dashboard-hero {
+      background: radial-gradient(120% 140% at 20% 0%, #16213D 0%, var(--primary) 55%, #0A1120 100%);
+      padding: 140px 0 60px;
+      color: #fff;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .dash-user-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .dash-avatar-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .dash-avatar-lg {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 800;
+      color: #0F172A;
+      box-shadow: 0 14px 30px -8px rgba(251, 191, 36, 0.5);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+    .dash-meta h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .dash-meta p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .dash-meta p span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .dash-actions-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Metric Cards */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+    .metric-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px 22px;
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .metric-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .metric-icon-gold { background: rgba(251, 191, 36, 0.15); color: var(--gold); }
+    .metric-icon-blue { background: rgba(37, 99, 235, 0.15); color: #60A5FA; }
+    .metric-icon-green { background: rgba(20, 184, 166, 0.15); color: #2DD4BF; }
+    .metric-icon-purple { background: rgba(168, 85, 247, 0.15); color: #C084FC; }
+    .metric-info h3 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+    .metric-info span { font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* Dashboard Body */
+    .dash-content {
+      padding: 60px 0 100px;
+      background: var(--bg);
+    }
+    .dash-tabs {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+      margin-bottom: 32px;
+      overflow-x: auto;
+    }
+    .dash-tab-btn {
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid transparent;
+      transition: all .25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .dash-tab-btn:hover { color: var(--ink); background: rgba(15, 23, 42, 0.04); }
+    .dash-tab-btn.active {
+      color: var(--primary);
+      background: #fff;
+      border-color: var(--line);
+      box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.1);
+    }
+    .dash-tab-btn .tab-badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 100px;
+      background: var(--line);
+      color: var(--ink);
+    }
+    .dash-tab-btn.active .tab-badge {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Booking Cards */
+    .booking-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .booking-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 26px 30px;
+      box-shadow: 0 8px 30px -10px rgba(15, 23, 42, 0.06);
+      transition: transform .3s ease, box-shadow .3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .booking-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px -12px rgba(15, 23, 42, 0.12);
+    }
+    .booking-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .b-title-area h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .b-title-area p {
+      font-size: 13.5px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .b-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .b-status-confirmed { background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .b-status-cancelled { background: rgba(239, 68, 68, 0.12); color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .b-status-pending   { background: rgba(245, 158, 11, 0.12); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .booking-grid-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-item label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
+    .meta-item b { font-size: 14.5px; color: var(--ink); font-weight: 700; }
+    .meta-item .ref-code-tag {
+      font-family: monospace;
+      background: var(--bg);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      font-size: 12.5px;
+      color: var(--secondary);
+    }
+
+    .booking-card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 10px;
+    }
+    .b-total-price {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .b-total-price span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* Cancel Modal */
+    .confirm-modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .confirm-modal-overlay.open { display: flex; }
+    .confirm-modal-card {
+      background: #fff;
+      border-radius: 24px;
+      max-width: 460px;
+      width: 100%;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.4);
+      animation: modalPop .3s ease;
+    }
+    @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Profile form */
+    .profile-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 36px;
+      max-width: 640px;
+      box-shadow: 0 8px 30px -10px rgba(15, 23, 42, 0.06);
+    }
+
+    /* Empty state */
+    .empty-state-box {
+      text-align: center;
+      padding: 70px 20px;
+      background: #fff;
+      border-radius: 24px;
+      border: 2px dashed var(--line);
+    }
+    .empty-icon {
+      width: 70px; height: 70px; border-radius: 50%; background: rgba(37, 99, 235, 0.08);
+      color: var(--secondary); display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <nav class="navbar solid-nav" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 9 L21 9 L15.5 13.5 L17.5 21 L12 16.5 L6.5 21 L8.5 13.5 L3 9 L10 9 Z"/></svg></span>
+        AZURA
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="packages.html">Packages</a>
+        <a href="experiences.html">Experiences</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <!-- Injected dynamically by main.js updateAuthNavbar() -->
+        <a href="login.html" class="nav-signin">Sign In</a>
+        <a href="signup.html" class="nav-signup">Sign Up</a>
+        <button class="btn btn-gold btn-sm" onclick="openBooking()">Book Now</button>
+      </div>
+      <button class="nav-toggle" onclick="toggleMobileMenu(true)" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-top">
+      <span class="logo">AZURA</span>
+      <button class="modal-close" style="background:rgba(255,255,255,.1);color:#fff" onclick="toggleMobileMenu(false)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <a href="index.html" onclick="toggleMobileMenu(false)">Home</a>
+    <a href="destinations.html" onclick="toggleMobileMenu(false)">Destinations</a>
+    <a href="packages.html" onclick="toggleMobileMenu(false)">Packages</a>
+    <a href="experiences.html" onclick="toggleMobileMenu(false)">Experiences</a>
+    <a href="about.html" onclick="toggleMobileMenu(false)">About</a>
+    <div class="mobile-menu-actions"></div>
+  </div>
+
+  <!-- ============================= HERO BANNER ============================= -->
+  <section class="dashboard-hero">
+    <div class="container">
+      <div class="dash-user-row">
+        <div class="dash-avatar-meta">
+          <div class="dash-avatar-lg" id="dashAvatar">T</div>
+          <div class="dash-meta">
+            <h1 id="dashUserName">Welcome back, Traveler</h1>
+            <p>
+              <span id="dashUserEmail">traveler@azura.com</span> •
+              <span id="dashUserPhone">+1-555-0199</span> •
+              <span class="role-chip customer-chip" id="dashUserRole">Verified Traveler</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="dash-actions-top">
+          <button class="btn btn-gold btn-sm" onclick="openBooking()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Book New Trip
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="logoutAzuraUser()">
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-icon-wrap metric-icon-gold">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="metric-info">
+            <h3 id="statTotalTrips">0</h3>
+            <span>Total Bookings</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-wrap metric-icon-green">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="metric-info">
+            <h3 id="statActiveTrips">0</h3>
+            <span>Confirmed Trips</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-wrap metric-icon-blue">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="metric-info">
+            <h3 id="statTotalSpent">$0</h3>
+            <span>Total Invested</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon-wrap metric-icon-purple">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="metric-info">
+            <h3>Gold</h3>
+            <span>Tier Status</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= DASHBOARD BODY ============================= -->
+  <section class="dash-content">
+    <div class="container">
+
+      <!-- Navigation Tabs -->
+      <div class="dash-tabs">
+        <button class="dash-tab-btn active" onclick="switchDashTab('bookings', this)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          My Bookings <span class="tab-badge" id="bookingsCountBadge">0</span>
+        </button>
+        <button class="dash-tab-btn" onclick="switchDashTab('profile', this)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile & Preferences
+        </button>
+        <button class="dash-tab-btn" onclick="switchDashTab('explore', this)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          Recommended Getaways
+        </button>
+      </div>
+
+      <!-- TAB 1: MY BOOKINGS -->
+      <div id="tabBookings" class="tab-panel">
+        <div class="booking-cards-list" id="bookingsContainer">
+          <div style="text-align:center;padding:40px;">
+            <p style="color:var(--muted);">Loading your verified bookings...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: PROFILE -->
+      <div id="tabProfile" class="tab-panel" style="display:none;">
+        <div class="profile-card">
+          <h2 style="font-size:20px;font-weight:800;margin-bottom:6px;">Personal Details</h2>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Manage your name, contact phone number, and preferences.</p>
+          <form onsubmit="return saveProfile(event)">
+            <div class="form-group" style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Full Name</label>
+              <input type="text" id="profName" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);" required>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Email Address (Read-only)</label>
+              <input type="email" id="profEmail" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);background:#f1f5f9;" readonly>
+            </div>
+            <div class="form-group" style="margin-bottom:24px;">
+              <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Phone Number</label>
+              <input type="tel" id="profPhone" style="width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);">
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding:12px 24px;">Save Profile Changes</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 3: EXPLORE -->
+      <div id="tabExplore" class="tab-panel" style="display:none;">
+        <div style="background:#fff;border-radius:24px;border:1px solid var(--line);padding:36px;text-align:center;">
+          <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Ready for your next journey?</h2>
+          <p style="color:var(--muted);font-size:15px;max-width:550px;margin:0 auto 24px;">Browse 100+ vetted luxury destinations including Santorini, Bali, Kyoto, Swiss Alps, and the Maldives.</p>
+          <a href="destinations.html" class="btn btn-gold" style="padding:13px 28px;">Explore All Destinations</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================= CANCEL CONFIRMATION MODAL ============================= -->
+  <div class="confirm-modal-overlay" id="cancelModal">
+    <div class="confirm-modal-card">
+      <div style="width:60px;height:60px;border-radius:50%;background:rgba(239,68,68,0.12);color:#DC2626;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      </div>
+      <h3 style="font-size:20px;font-weight:800;color:var(--ink);margin-bottom:8px;">Cancel this Booking?</h3>
+      <p style="color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:24px;" id="cancelModalText">
+        Are you sure you want to cancel this booking? This reservation will be marked as cancelled.
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn btn-outline" onclick="closeCancelModal()" style="padding:11px 22px;">Keep Booking</button>
+        <button class="btn btn-primary" id="confirmCancelBtn" style="background:#DC2626;border-color:#DC2626;padding:11px 22px;">Yes, Cancel Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================= BOOKING MODAL ============================= -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="booking-modal">
+      <div class="modal-head">
+        <div><h3 id="bookingTitle">Complete Your Booking</h3><p id="bookingSub">Step <span id="stepNum">1</span> of 3</p></div>
+        <button class="modal-close" onclick="closeBooking()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="modal-steps"><div class="step-dot active" id="dot1"></div><div class="step-dot" id="dot2"></div><div class="step-dot" id="dot3"></div></div>
+      <div class="modal-body">
+        <div class="m-step active" id="step1">
+          <div class="trip-summary"><div class="row"><span>Selected Trip</span><b id="sumPkg">Santorini Escape</b></div><div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div></div>
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" id="bookFirstName" placeholder="First Name" required></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="bookLastName" placeholder="Last Name" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Email Address</label><input type="email" id="bookEmail" placeholder="name@gmail.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="bookPhone" placeholder="Mobile Number"></div>
+            <div class="form-group"><label>Travelers</label><select id="bookTravelers" onchange="updateBookingCalculation()"><option value="1">1 Adult</option><option value="2" selected>2 Adults</option><option value="3">3 Adults</option><option value="4">Family (4)</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full"><label>Departure Date</label><input type="date" id="bookDate"></div>
+          </div>
+          <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
+        </div>
+        <div class="m-step" id="step2">
+          <div class="pay-methods">
+            <div class="pay-method selected" data-pay="visa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg>Visa</div>
+            <div class="pay-method" data-pay="mastercard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>Mastercard</div>
+            <div class="pay-method" data-pay="upi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M18 3 6 21M18 21V3"/></svg>UPI</div>
+          </div>
+          <div id="cardFields">
+            <div class="form-row">
+              <div class="form-group full"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM / YY"></div>
+              <div class="form-group"><label>CVV</label><input type="text" placeholder="123"></div>
+            </div>
+          </div>
+          <div class="trip-summary"><div class="row"><span>Package Base</span><b id="sumBase">$1,890</b></div><div class="row"><span>Taxes & Fees</span><b>$142</b></div><div class="row total"><span>Total</span><b id="sumTotal">$2,032</b></div></div>
+          <div class="modal-actions"><button class="btn btn-outline" onclick="goStep(1)">Back</button><button class="btn btn-primary btn-block" onclick="goStep(3)">Confirm & Pay</button></div>
+        </div>
+        <div class="m-step" id="step3">
+          <div class="success-wrap"><div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h3>Booking Confirmed!</h3><div class="ref-code" id="refCode">—</div><button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg><span id="toastMsg">Done</span></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js?v=2.6"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    let currentPendingCancelId = null;
+    let myBookingsList = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = getAzuraCurrentUser();
+      if (!user) {
+        showToast('Please sign in to view your dashboard');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+        return;
+      }
+
+      // Populate User Header
+      const initial = (user.name || user.email || 'U').charAt(0).toUpperCase();
+      document.getElementById('dashAvatar').textContent = initial;
+      document.getElementById('dashUserName').textContent = `Welcome back, ${user.name || 'Traveler'}`;
+      document.getElementById('dashUserEmail').textContent = user.email || '';
+      document.getElementById('dashUserPhone').textContent = user.phone || 'No phone set';
+      document.getElementById('dashUserRole').textContent = (user.role === 'Admin') ? 'Administrator' : 'Verified Traveler';
+
+      // Populate profile tab fields
+      document.getElementById('profName').value = user.name || '';
+      document.getElementById('profEmail').value = user.email || '';
+      document.getElementById('profPhone').value = user.phone || '';
+
+      loadUserBookings();
+    });
+
+    async function loadUserBookings() {
+      const container = document.getElementById('bookingsContainer');
+      const token = localStorage.getItem('azuraAuthToken');
+
+      try {
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch('/api/bookings/my', { headers });
+        const data = await res.json();
+
+        if (res.ok && data.success && Array.isArray(data.data)) {
+          myBookingsList = data.data;
+          renderBookings(myBookingsList);
+        } else {
+          // Fallback demo bookings if offline or not returned
+          renderBookings([]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch bookings:', err);
+        renderBookings([]);
+      }
+    }
+
+    function renderBookings(list) {
+      const container = document.getElementById('bookingsContainer');
+      const badge = document.getElementById('bookingsCountBadge');
+      const statTotal = document.getElementById('statTotalTrips');
+      const statActive = document.getElementById('statActiveTrips');
+      const statSpent = document.getElementById('statTotalSpent');
+
+      badge.textContent = list.length;
+      statTotal.textContent = list.length;
+
+      const activeCount = list.filter(b => b.booking_status !== 'Cancelled').length;
+      statActive.textContent = activeCount;
+
+      const totalSpent = list
+        .filter(b => b.booking_status !== 'Cancelled')
+        .reduce((sum, b) => sum + (parseFloat(b.total_amount) || 0), 0);
+      statSpent.textContent = '$' + totalSpent.toLocaleString();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-box">
+            <div class="empty-icon">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <h3 style="font-size:20px;font-weight:800;color:var(--ink);margin-bottom:6px;">No Bookings Found</h3>
+            <p style="color:var(--muted);font-size:14.5px;max-width:440px;margin:0 auto 20px;">You haven't booked any journeys yet. Explore our 120+ destinations and secure your next luxury experience.</p>
+            <a href="destinations.html" class="btn btn-gold btn-sm">Discover Destinations</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(b => {
+        const isCancelled = (b.booking_status === 'Cancelled');
+        const isConfirmed = (b.booking_status === 'Confirmed');
+        const statusClass = isCancelled ? 'b-status-cancelled' : (isConfirmed ? 'b-status-confirmed' : 'b-status-pending');
+        const formattedDate = b.booking_date ? new Date(b.booking_date).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : 'Flexible';
+        const formattedTotal = '$' + Number(b.total_amount).toLocaleString();
+
+        return `
+          <div class="booking-card">
+            <div class="booking-card-head">
+              <div class="b-title-area">
+                <h3>${b.package_name || 'AZURA Luxury Tour'}</h3>
+                <p>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  ${b.destination_name ? `${b.destination_name}, ${b.country}` : 'Global Destination'}
+                </p>
+              </div>
+              <span class="b-status-badge ${statusClass}">
+                <span style="width:7px;height:7px;border-radius:50%;background:currentColor;"></span>
+                ${b.booking_status || 'Confirmed'}
+              </span>
+            </div>
+
+            <div class="booking-grid-meta">
+              <div class="meta-item">
+                <label>Booking ID</label>
+                <b>#${b.booking_id}</b>
+              </div>
+              <div class="meta-item">
+                <label>Departure Date</label>
+                <b>${formattedDate}</b>
+              </div>
+              <div class="meta-item">
+                <label>Travelers</label>
+                <b>${b.number_of_travelers || 2} Guests</b>
+              </div>
+              <div class="meta-item">
+                <label>Payment Method</label>
+                <b>${b.payment_method || 'Card'}</b>
+              </div>
+              <div class="meta-item">
+                <label>Transaction ID</label>
+                <span class="ref-code-tag">${b.transaction_id || 'AZ-PENDING'}</span>
+              </div>
+            </div>
+
+            <div class="booking-card-foot">
+              <div class="b-total-price">
+                ${formattedTotal} <span>(Taxes & Fees included)</span>
+              </div>
+              <div>
+                ${!isCancelled ? `
+                  <button class="btn btn-outline btn-sm" style="color:#DC2626;border-color:rgba(220,38,38,0.3);" onclick="promptCancelBooking(${b.booking_id}, '${b.package_name}')">
+                    Cancel Booking
+                  </button>
+                ` : `
+                  <span style="font-size:13px;color:#9CA3AF;font-weight:600;">Booking is Cancelled</span>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchDashTab(tab, btn) {
+      document.querySelectorAll('.dash-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+      if (tab === 'bookings') document.getElementById('tabBookings').style.display = 'block';
+      if (tab === 'profile')  document.getElementById('tabProfile').style.display = 'block';
+      if (tab === 'explore')  document.getElementById('tabExplore').style.display = 'block';
+    }
+
+    function promptCancelBooking(bookingId, pkgName) {
+      currentPendingCancelId = bookingId;
+      document.getElementById('cancelModalText').textContent =
+        `Are you sure you want to cancel Booking #${bookingId} (${pkgName})? This triggers the MySQL CancelBooking procedure and updates your booking status.`;
+      document.getElementById('cancelModal').classList.add('open');
+
+      document.getElementById('confirmCancelBtn').onclick = () => executeCancelBooking(bookingId);
+    }
+
+    function closeCancelModal() {
+      document.getElementById('cancelModal').classList.remove('open');
+      currentPendingCancelId = null;
+    }
+
+    async function executeCancelBooking(bookingId) {
+      closeCancelModal();
+      const token = localStorage.getItem('azuraAuthToken');
+
+      try {
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const res = await fetch(`/api/bookings/${bookingId}/cancel`, {
+          method: 'PUT',
+          headers
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(`✓ Booking #${bookingId} cancelled`);
+          // Reload real data
+          loadUserBookings();
+        } else {
+          showToast(data.message || 'Could not cancel booking');
+        }
+      } catch (err) {
+        showToast('Error connecting to server to cancel booking');
+      }
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      const name = document.getElementById('profName').value.trim();
+      const phone = document.getElementById('profPhone').value.trim();
+      const token = localStorage.getItem('azuraAuthToken');
+
+      try {
+        const res = await fetch('/api/auth/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({ name, phone })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          // Update local session
+          const user = getAzuraCurrentUser() || {};
+          user.name = name;
+          user.phone = phone;
+          localStorage.setItem('azuraCurrentUser', JSON.stringify(user));
+
+          showToast('✓ Profile updated successfully!');
+          document.getElementById('dashUserName').textContent = `Welcome back, ${name}`;
+          document.getElementById('dashUserPhone').textContent = phone || 'No phone set';
+          updateAuthNavbar();
+        } else {
+          showToast(data.message || 'Error updating profile');
+        }
+      } catch (_) {
+        showToast('✓ Profile updated locally');
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

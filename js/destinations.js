@@ -298,4 +298,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   renderCatalog();
+  syncDestinationsFromAPI();
 });
+
+// Sync live destinations from MySQL database if API is available
+async function syncDestinationsFromAPI() {
+  try {
+    const res = await fetch('/api/destinations');
+    if (!res.ok) return;
+    const result = await res.json();
+    if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+      let added = false;
+      result.data.forEach(dbItem => {
+        const slug = dbItem.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const existing = DESTINATIONS_DATA.find(d => d.id === slug || d.name.toLowerCase() === dbItem.name.toLowerCase());
+        if (!existing) {
+          DESTINATIONS_DATA.push({
+            id: slug,
+            name: dbItem.name,
+            country: dbItem.country,
+            tag: "Culture",
+            rating: parseFloat(dbItem.rating) || 4.5,
+            reviewsCount: 88,
+            price: parseFloat(dbItem.price) || 950,
+            img: "photo-1506744038136-46273834b3fb",
+            overview: dbItem.description || `${dbItem.name} in ${dbItem.country} offers stunning attractions, local hospitality, and unforgettable cultural sights.`,
+            highlights: ["Guided historic landmarks tour", "Local cuisine & delicacies", "Scenic photography points"]
+          });
+          added = true;
+        }
+      });
+      if (added) {
+        renderCatalog();
+      }
+    }
+  } catch (_) {
+    // Static mode works smoothly
+  }
+}
+

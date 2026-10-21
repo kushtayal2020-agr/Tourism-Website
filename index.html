@@ -673,6 +673,8 @@ input,select{font-family:inherit;}
 /* generic center flex */
 .center-cta{text-align:center;margin-top:8px;}
 </style>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 
@@ -1028,15 +1030,18 @@ input,select{font-family:inherit;}
           <div class="row"><span>Duration</span><b id="sumDur">6 Days / 5 Nights</b></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" required></div>
-          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" required></div>
+          <div class="form-group"><label>First Name</label><input type="text" id="bookFirstName" placeholder="First Name" required></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="bookLastName" placeholder="Last Name" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group full"><label>Email Address</label><input type="email" placeholder="jane@email.com" required></div>
+          <div class="form-group full"><label>Email Address</label><input type="email" id="bookEmail" placeholder="name@gmail.com" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+1 555 000 0000"></div>
-          <div class="form-group"><label>Travelers</label><select><option>1 Adult</option><option selected>2 Adults</option><option>2 Adults, 1 Child</option><option>Family (4+)</option></select></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="bookPhone" placeholder="Mobile Number"></div>
+          <div class="form-group"><label>Travelers</label><select id="bookTravelers" onchange="updateBookingCalculation()"><option value="1">1 Adult</option><option value="2" selected>2 Adults</option><option value="3">3 Adults</option><option value="4">Family (4)</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full"><label>Departure Date</label><input type="date" id="bookDate"></div>
         </div>
         <div class="modal-actions"><button class="btn btn-primary btn-block" onclick="goStep(2)">Continue to Payment</button></div>
       </div>
@@ -1077,7 +1082,7 @@ input,select{font-family:inherit;}
           <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
           <h3>Booking Confirmed!</h3>
           <p>Your trip is officially on the calendar. A confirmation with your full itinerary has been sent to your email.</p>
-          <div class="ref-code" id="refCode">AZ-284915</div>
+          <div class="ref-code" id="refCode">—</div>
           <button class="btn btn-dark btn-block" onclick="closeBooking()">Done</button>
         </div>
       </div>
@@ -1373,50 +1378,6 @@ function showToast(msg){
   toastTimer=setTimeout(()=>toast.classList.remove('show'),3200);
 }
 
-/* ============================= BOOKING MODAL LOGIC ============================= */
-let currentPkg={name:"Santorini Escape",dur:"6 Days / 5 Nights",price:1890};
-function openBooking(){openBookingFor(currentPkg.name,currentPkg.dur,currentPkg.price);}
-function openBookingFor(name,dur,price){
-  currentPkg={name,dur,price};
-  document.getElementById('sumPkg').textContent=name;
-  document.getElementById('sumDur').textContent=dur;
-  document.getElementById('sumBase').textContent='$'+price.toLocaleString();
-  document.getElementById('sumTotal').textContent='$'+(price+142).toLocaleString();
-  document.getElementById('refCode').textContent='AZ-'+Math.floor(100000+Math.random()*899999);
-  goStep(1);
-  document.getElementById('bookingModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeBooking(){
-  document.getElementById('bookingModal').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('bookingModal').addEventListener('click',e=>{if(e.target.id==='bookingModal')closeBooking();});
-
-function goStep(n){
-  document.querySelectorAll('.m-step').forEach(s=>s.classList.remove('active'));
-  document.getElementById('step'+n).classList.add('active');
-  [1,2,3].forEach(i=>{
-    const dot=document.getElementById('dot'+i);
-    dot.classList.toggle('active',i===n);
-    dot.classList.toggle('done',i<n);
-  });
-  document.getElementById('stepNum').textContent=n;
-  const sub=document.getElementById('bookingSub');
-  const title=document.getElementById('bookingTitle');
-  if(n===3){title.textContent="You're All Set";sub.innerHTML='Payment received';}
-  else{title.textContent='Complete Your Booking';sub.innerHTML='Step <span id="stepNum">'+n+'</span> of 3';}
-}
-
-document.querySelectorAll('.pay-method').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.pay-method').forEach(b=>b.classList.remove('selected'));
-    btn.classList.add('selected');
-    const cardFields=document.getElementById('cardFields');
-    cardFields.style.display=(btn.dataset.pay==='visa'||btn.dataset.pay==='mastercard')?'block':'none';
-  });
-});
-document.querySelector('.pay-method[data-pay="visa"]').classList.add('selected');
 
 /* keyboard escape closes overlays */
 document.addEventListener('keydown',(e)=>{
@@ -1435,5 +1396,7 @@ renderMap();
 initReveal();
 initCounters();
 </script>
+<script src="js/main.js?v=2.6"></script>
+<script src="js/chatbot.js"></script>
 </body>
 </html>
